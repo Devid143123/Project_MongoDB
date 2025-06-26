@@ -28,6 +28,7 @@ VEHICLE_CLASSES = {
 class YOLOVehicleCounter:
     def __init__(self, gui_callback, video_source=None, counting_zone_height=30):
         self.model = YOLO("yolov8n.pt")
+        
         sample_video_path = "sample_cars.mp4"
         if os.path.exists(sample_video_path):
             self.cap = cv2.VideoCapture(sample_video_path)
@@ -147,7 +148,7 @@ class YOLOVehicleCounter:
 
     def _update_display(self, frame):
         h, w = frame.shape[:2]
-        self.line_position = int(frame.shape[0] * 0.75)  # 65% of the height from top
+        self.line_position = int(frame.shape[0] * 0.90)  # 85% of the height from top
 
         # Force horizontal red line (middle of frame)
         cv2.line(frame, (0, self.line_position), (frame.shape[1], self.line_position), (0, 0, 255), 4)
@@ -278,7 +279,7 @@ class VehicleCounterGUI:
                 self.client = MongoClient(uri, tlsCAFile=certifi.where())
             else:
                 self.client = MongoClient(uri)
-
+        
             self.client.admin.command('ping')
 
             self.db = self.client[db_name]
